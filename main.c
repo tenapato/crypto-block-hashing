@@ -7,11 +7,12 @@
 
 
 
+
 int main(){
     int num = 0;
     char *pass = (char *)malloc(sizeof(char)*1000);	
 	char *hash = (char *)malloc(sizeof(char)*1000);
-	int dificultad = 5;
+	int dificultad = 3;
 	char *strToCompare = (char *)malloc(dificultad);
 	char *ceros = (char *)malloc(sizeof(char)*dificultad);
 	//int *aux;
@@ -23,8 +24,6 @@ int main(){
 		
 	}
 	
-	
-	
     for (int i = 0; i < 1000000000; i++){
 		
         sprintf(pass, "%d", num);
@@ -34,12 +33,15 @@ int main(){
 		
 		strncpy(strToCompare, hash, dificultad);
 		printf("Str %s Ceros: %s\n", strToCompare, ceros);
+		
 
 		if (!strcmp(strToCompare, ceros))
 		{
 			printf("Es el numero buscado es: %s -------\n", pass);
 			break;
 		}
+
+		
 		
 
 

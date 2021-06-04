@@ -12,10 +12,11 @@ int main(){
     int num = 0;
     char *pass = (char *)malloc(sizeof(char)*1000);	
 	char *hash = (char *)malloc(sizeof(char)*1000);
-	int dificultad = 1;
+	int dificultad = 3;
 	char *strToCompare = (char *)malloc(dificultad);
 	char *ceros = (char *)malloc(sizeof(char)*dificultad);
-	
+	int seguir = 0;
+
     int nthreads, tid;
     double t_inicial, t_final;
 	
@@ -35,9 +36,9 @@ int main(){
     }*/
     t_inicial = omp_get_wtime();
     /* Cada hilo tienen una variable tid privada */
-    #pragma omp parallel private(tid)
+    #pragma omp parallel private(tid) shared(seguir)
     {
-        int seguir = 0;
+        
         /* Obtener el thread id */
         tid = omp_get_thread_num();
         
@@ -56,42 +57,42 @@ int main(){
             fin = inicio + slots;
         }
 
-        if (seguir == 0)
+        
+        /* Buscar hash */
+        for (int i = 0; i < ELEMENTOS && seguir == 0; i++){
+        
+        sprintf(pass, "%d", num);
+        hash = crypt(pass, "$5$");
+        hash = hash+4;
+        printf("Num: %d, Hash: %s\r", num, hash);
+        //fflush();
+        //printf("Seguir %d\n", seguir);
+        strncpy(strToCompare, hash, dificultad);
+        //printf("Hilo %d, Str %s, Ceros: %s\n", tid, strToCompare, ceros);
+    
+
+        if (!strcmp(strToCompare, ceros))
         {
-            /* Buscar hash */
-            for (int i = 0; i < ELEMENTOS; i++){
-            
-            sprintf(pass, "%d", num);
-            hash = crypt(pass, "$5$");
-            hash = hash+4;
-            printf("Num: %d, Hash: %s\n", num, hash);
-            
-            strncpy(strToCompare, hash, dificultad);
-            printf("Hilo %d, Str %s, Ceros: %s\n", tid, strToCompare, ceros);
-        
+            t_final = omp_get_wtime();
 
-            if (!strcmp(strToCompare, ceros))
+            printf("Es el numero buscado es: %s ------- Encontrado en el hilo %d\n", pass, tid);
+            printf("Con el Hash: %s\n", hash);
+            printf("Calculado en %.8fs\n", t_final-t_inicial);
+            #pragma omp critical
             {
-                printf("Es el numero buscado es: %s ------- Encontrado en el hilo %d\n", pass, tid);
-                #pragma omp critical
-                {
-                    seguir = 1;
-                }
-                break;
+                seguir = 1;
             }
-            num++;
-
-            } 
+            break;
         }
-        
-        
+        num++;
 
+        } 
+        
     
     }
-    t_final = omp_get_wtime();
-
     
-    printf("Calculado en %.8f\n", t_final-t_inicial);
+    
+   
 	
 
    
