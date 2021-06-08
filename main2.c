@@ -12,7 +12,7 @@ int main(){
     int num = 0;
     char *pass = (char *)malloc(sizeof(char)*1000);	
 	char *hash = (char *)malloc(sizeof(char)*1000);
-	int dificultad = 3;
+	int dificultad = 1;
 	char *strToCompare = (char *)malloc(dificultad);
 	char *ceros = (char *)malloc(sizeof(char)*dificultad);
 	int seguir = 0;
@@ -59,7 +59,7 @@ int main(){
 
         
         /* Buscar hash */
-        for (int i = 0; i < ELEMENTOS && seguir == 0; i++){
+        for (int i = inicio; i < fin && seguir == 0; i++){
         
         sprintf(pass, "%d", num);
         hash = crypt(pass, "$5$");
