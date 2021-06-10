@@ -62,7 +62,7 @@ A continuación aparecen descritos los diferentes elementos que forman parte de 
  
 Uno de los problemas que encontramos es que cada máquina analizaba los mismos datos, para resover esto cada nodo tenían que dividirse una cierta cantidad de datos y analizar solo ese rango, para asi encontralos de una manera mucho más eficientes.
 
-Otro problema era que al un nodo encontar el hash deseado, tenía que mandar una señal a las demás máquinas para que detuvieran su búsqueda. Para eso utilizamos una variable compartida, que se accesaba dentro de la zona crítica, y asi todos los nodos supieran si es hash ya se había, o no, encontrado.
+Otro problema era que al un nodo encontar el hash deseado, tenía que mandar una señal a las demás máquinas para que detuvieran su búsqueda. Para eso utilizamos una variable compartida, que se accesaba dentro de la zona crítica, y asi todos los nodos supieran si es hash ya se había, o no, encontrado. Este problema fue resuelto al utilizar un broadcast que le informara a los nodos e hilos que ya se encontró el hash deseado, para que estos dejen de seuir buscando el hash
 ### 3.2 Análisis de los inhibidores del paralelismo
 
 Un inhibidor que encontramos es que cuando un hilo dentro de un nodo encontraba el hash deseado le tenía que enviar la variable a los otros hilos y nodos para que estos se detuvieran una vez que el hash fuera encontrado.
