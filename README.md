@@ -1,12 +1,11 @@
-# *[Poner aquí el Título del Proyecto]*
+# Simulación de minado de bloques de una cripto moneda
 ---
 #### Materia: *TC2025-Programación Avanzada*
 
 ##### Integrantes:
-1. *[Poner aquí Nombre y Apellidos del integrante 1]* - *[Poner aquí su Matrícula]* 
-2. *[Poner aquí Nombre y Apellidos del integrante 2]* - *[Poner aquí su Matrícula]* 
-3. *[Poner aquí Nombre y Apellidos del integrante 3]* - *[Poner aquí su Matrícula]* 
-4. *[Poner aquí Nombre y Apellidos del integrante 4]* - *[Poner aquí su Matrícula]* 
+1. Rodrigo Benavente García - A01026973
+2. Patricio Tena Zozaya - A01027293
+
 
 ---
 ## 1. Aspectos generales
@@ -34,6 +33,9 @@ El proyecto debe seguir la siguiente estructura de carpetas:
 - / 			        # Raíz de todo el proyecto
     - README.md			# Archivo con los datos del proyecto (este archivo)
     - source			# Carpeta con el código fuente de la solución
+        - main.c        # Solución en secuencial
+        - main2.c       # Solución en paralelo en una sola maquina
+        - main3.c.      # Solucion en paralelo en varios nodos
     - docs			    # Carpeta con la documentación del proyecto: PDF, imágenes, etc.
 ```
 
@@ -50,44 +52,71 @@ Como parte de la entrega final del proyecto, se debe incluir la siguiente inform
 
 ## 2. Descripción del problema
 
-*[Incluya aquí la descripción del problema a resolver.]*
+El problema que se resuelve es la implementación del hasheado de una cripto moneda en paralelo. Para esto se utilizo la función de hasheo SHA-256 y una implementación en fuerza bruta para un n número de datos. 
 
 ## 3. Solución
 
 A continuación aparecen descritos los diferentes elementos que forman parte de la solución del proyecto.
 
 ### 3.1 Análisis de concurrencia
+ 
+Uno de los problemas que encontramos es que cada máquina analizaba los mismos datos, para resover esto cada nodo tenían que dividirse una cierta cantidad de datos y analizar solo ese rango, para asi encontralos de una manera mucho más eficientes.
 
-*[Incluya aquí un análisis exhaustivo de los problemas de concurrencia que se presentan y una explicación clara de cómo se resuelve cada uno de ellos en la solución propuesta.]*
-
+Otro problema era que al un nodo encontar el hash deseado, tenía que mandar una señal a las demás máquinas para que detuvieran su búsqueda. Para eso utilizamos una variable compartida, que se accesaba dentro de la zona crítica, y asi todos los nodos supieran si es hash ya se había, o no, encontrado.
 ### 3.2 Análisis de los inhibidores del paralelismo
 
 *[Incluya aquí un análisis exhaustivo de los inhibidores del paralelismo presentes en el problema planteado y una explicación clara de cómo se resuelve cada uno de ellos en la solución implementada.]*
 
 ### 3.3 Arquitectura de la solución
 
-*[Incluya aquí un diagrama donde se aprecie la arquitectura de la solución propuesta, así como la interacción entre los diferentes componentes de la misma.]*
-
-*[Incluya una explicación del flujo de la información entre los diferentes componentes.]*
-
-### 3.4 Descripción de los componentes
-
-*[Incluya aquí una descripción detallada de cada uno de los componentes de la solución.]*
-
+![img_1](docs/diagrama1.jpeg)
 ## 4. Pasos a seguir para utilizar el proyecto
 
 ### 4.1 Dependencias y requisitos
 
-*[Incluya aquí una explicación de los diferentes frameworks y librerías utilizadas.]*
-
+- OpenMP
 #### 4.1.1 Frameworks
-
+No aplica
 #### 4.1.2 Librerías de funciones o dependencias
-
+- OpenMP
+- Vagrant
+- VirtualBox
+- Crypt
 #### 4.1.3 Guía de uso
 
-*[Incluya aquí una guía paso a paso para poder utilizar el proyecto, desde la clonación de este repositorio, la compilación, instalación de dependencias hasta la ejecución de la solución en el clúster.]*
+1. Instalar [VirtualBox](https://www.virtualbox.org/)
+2. Instalar [Vagrant](https://www.vagrantup.com/)
+3. Crea una carpeta nombrada mpi-vagrant en tu computadora
+4. Descarga a la carpeta mpi-vagrant los archivos [Vagrantfile](docs/Vagrantfile) y [Machines](docs/machines)
+5. Abre una Terminal en tu computadora y cámbiate a la carpeta mpi-vagrant
+6. Clona el repositorio: 
+
+        git clone https://github.com/tec-csf/tc2025-proyecto-final-equipo_2
+7. Inicia el clúster: 
+        
+        vagrant up
+8. Una vez que termine el comando anterior, accede por SSH al nodo 1 con el comando:
+        
+        vagrant ssh node1
+    - Desde el nodo 1, verifica que tienes conectividad al nodo 2 con el comando: ssh node2. La primera vez te preguntará si aceptas que se adicione la llave al archivo de autorización, selecciona que si (Y) y continua.
+    - Regresa al nodo 1 con el comando: exit
+    - Desde el nodo 1, verifica que tienes conectividad al nodo 3 con el comando: ssh node3. La primera vez te preguntará si aceptas que se adicione la llave al archivo de autorización, selecciona que si (Y) y continua.
+    - Regresa al nodo 1 con el comando: exit
+9. Una vez dentro del nodo 1:
+    - Moverte a la ubicacion del codigo:
+
+            cd /vagrant/tc2025-proyecto-final-equipo_2/
+
+    - Compilar el código:
+
+            mpicc main3.c -lcrypt -fopenmp
+    - Correrlo:
+
+            mpirun -np 3 -f /vagrant/machines ./a.out
+    
 
 ## 5. Referencias
 
-*[Incluya aquí las referencias a sitios de interés, artículos, libros, documentos y cualquier otra información que haya utilizado para realizar el proyecto y que le puedan ser de utilidad a otras personas que quieran usarlo como referencia]*
+- https://www.freecodecamp.org/news/how-bitcoin-mining-really-works-38563ec38c87/
+- https://www.youtube.com/watch?v=bBC-nXj3Ng4&t=1s
+- https://bitcoin.org/bitcoin.pdf
