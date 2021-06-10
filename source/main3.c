@@ -6,8 +6,8 @@
 #include <omp.h>
 #include "mpi.h"
 
-#define ELEMENTOS 1000000000
-//#define MAXSIZE 1000
+#define ELEMENTOS 1000000000 //Rango donde se busca el hasheo
+
 
 int main(int argc, char *argv[]){
     int myid, numprocs, nhilos, n, c;
@@ -20,8 +20,6 @@ int main(int argc, char *argv[]){
 	char *strToCompare = (char *)malloc(dificultad);
 	char *ceros = (char *)malloc(sizeof(char)*dificultad);
 	int seguir = 0;
-    //int data[MAXSIZE];
-    //n = MAXSIZE;
     int nthreads, tid, x, low, high;
     double t_inicial, t_final;
 
@@ -31,34 +29,24 @@ int main(int argc, char *argv[]){
 
     MPI_Get_processor_name(hostname, &longitud);
 
-    //printf("Argv %s\n", argv[1]);
-
     dificultad = atoi(argv[1]);
-
-    //printf("Dificultad %d\n", dificultad);
-    //MPI_Bcast(data, seguir ,MPI_INT, 0, MPI_COMM_WORLD);
-
-    // Dividir datos para cada procesador
-
+    /* Division de los elementos entre los nodos */
     x = ELEMENTOS/numprocs;
-    low = myid * x;
-    high = low + x;
+    low = myid * x;//Donde empieza a buscar cada nodo
+    high = low + x;//Donde termina de buscar cada nodo
     if (myid == numprocs - 1) {
         high = ELEMENTOS;
     }
 
 	
-	for (int i = 0; i < dificultad; i++)
-	{
+	for (int i = 0; i < dificultad; i++){//Se ponen cuantos ceros tiene que tener el hash al principio para poder buscarlo
 		strcat(ceros, "0");
-		
 	}
-
    
-    t_inicial = omp_get_wtime();
+    t_inicial = omp_get_wtime();//Se empieza a tomar el tiempo
     /* Cada hilo tienen una variable tid privada */
     #pragma omp parallel private(tid, nhilos) shared(seguir)
-    {
+    {//Compartimos la variable seguir entre los hilos
         int num = low;
         
         /* Obtener el thread id */
@@ -66,8 +54,6 @@ int main(int argc, char *argv[]){
         
         /* Obtener número de hilos */
         nhilos = omp_get_num_threads();
-        //nhilos = 10;
-        //printf("High %d, low %d, Id %d, hilos %d\n", high, low, myid, nhilos);
 
         // Particionar los datos para cada hilo
         int slots = high / nhilos;
@@ -84,17 +70,13 @@ int main(int argc, char *argv[]){
 
 
         /* Buscar hash */
-        for (int i = low; i < high && seguir == 0; i++){
+        for (int i = low; i < high && seguir == 0; i++){//Mientras no se haya encontrado un hash los hilos siguen buscando
         //printf("I: %d\n", i);
         sprintf(pass, "%d", num);
         hash = crypt(pass, "$5$");
         hash = hash+4;
         printf("Num: %d, Hash: %s\r", num, hash);
-        //fflush();
-        //printf("Seguir %d\n", seguir);
-        strncpy(strToCompare, hash, dificultad);
-        //printf("Hilo %d, Str %s, Ceros: %s\n", tid, strToCompare, ceros);
-    
+        strncpy(strToCompare, hash, dificultad);    
 
         if (!strcmp(strToCompare, ceros))
         {
@@ -106,24 +88,18 @@ int main(int argc, char *argv[]){
             #pragma omp critical
             {
                 seguir = 1;
-                MPI_Bcast(&seguir, 1, MPI_INT, 0, MPI_COMM_WORLD);
+                MPI_Bcast(&seguir, 1, MPI_INT, 0, MPI_COMM_WORLD);//Se le avisa a los nodos e hilos que un hash ya fue encontrado
             }
             break;
         }
         num++;
-
         } 
-        
-    
     }
     
     
    MPI_Finalize();
 	
-
-   
 	free(pass);
 	free(ceros);
-	//free(hash);
     return 0;
 }
