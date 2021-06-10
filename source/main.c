@@ -54,6 +54,8 @@ int main(){
    
 	free(pass);
 	free(ceros);
-	//free(hash);
+	free(hash);
+	free(strToCompare);
+	free(ceros);
     return 0;
 }

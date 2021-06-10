@@ -98,6 +98,6 @@ int main(){
    
 	free(pass);
 	free(ceros);
-	//free(hash);
+	free(hash);
     return 0;
 }

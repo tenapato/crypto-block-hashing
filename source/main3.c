@@ -101,5 +101,8 @@ int main(int argc, char *argv[]){
 	
 	free(pass);
 	free(ceros);
+    free(hash);
+	free(strToCompare);
+	free(ceros);
     return 0;
 }
