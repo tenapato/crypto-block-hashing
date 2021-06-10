@@ -114,6 +114,9 @@ No aplica
 
             mpirun -np 3 -f /vagrant/machines ./a.out 'd'
         >Donde d es un int de la dificultad del hasheado
+10. Para apagar vagrant:
+
+        vagrant halt
     
 
 ## 5. Referencias
