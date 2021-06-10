@@ -112,7 +112,8 @@ No aplica
             mpicc main3.c -lcrypt -fopenmp
     - Correrlo:
 
-            mpirun -np 3 -f /vagrant/machines ./a.out
+            mpirun -np 3 -f /vagrant/machines ./a.out 'd'
+        >Donde d es un int de la dificultad del hasheado
     
 
 ## 5. Referencias

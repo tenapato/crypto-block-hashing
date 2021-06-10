@@ -12,7 +12,7 @@ int main(){
     int num = 0;
     char *pass = (char *)malloc(sizeof(char)*1000);	
 	char *hash = (char *)malloc(sizeof(char)*1000);
-	int dificultad = 1;
+	int dificultad = 2;
 	char *strToCompare = (char *)malloc(dificultad);
 	char *ceros = (char *)malloc(sizeof(char)*dificultad);
 	int seguir = 0;

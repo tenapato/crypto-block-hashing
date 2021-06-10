@@ -10,13 +10,13 @@
 //#define MAXSIZE 1000
 
 int main(int argc, char *argv[]){
-    int myid, numprocs, nhilos, n;
+    int myid, numprocs, nhilos, n, c;
     int longitud;
     char hostname[MPI_MAX_PROCESSOR_NAME];
     
     char *pass = (char *)malloc(sizeof(char)*1000);	
 	char *hash = (char *)malloc(sizeof(char)*1000);
-	int dificultad = 3;
+	int dificultad;
 	char *strToCompare = (char *)malloc(dificultad);
 	char *ceros = (char *)malloc(sizeof(char)*dificultad);
 	int seguir = 0;
@@ -31,7 +31,11 @@ int main(int argc, char *argv[]){
 
     MPI_Get_processor_name(hostname, &longitud);
 
+    //printf("Argv %s\n", argv[1]);
 
+    dificultad = atoi(argv[1]);
+
+    //printf("Dificultad %d\n", dificultad);
     //MPI_Bcast(data, seguir ,MPI_INT, 0, MPI_COMM_WORLD);
 
     // Dividir datos para cada procesador
@@ -64,7 +68,21 @@ int main(int argc, char *argv[]){
         nhilos = omp_get_num_threads();
         //nhilos = 10;
         //printf("High %d, low %d, Id %d, hilos %d\n", high, low, myid, nhilos);
-    
+
+        // Particionar los datos para cada hilo
+        int slots = high / nhilos;
+        int inicio = tid * slots;
+        int fin;
+        if (tid == nhilos - 1)
+        {
+            fin = high;
+        }
+        else {
+            fin = inicio + slots;
+        }
+
+
+
         /* Buscar hash */
         for (int i = low; i < high && seguir == 0; i++){
         //printf("I: %d\n", i);
