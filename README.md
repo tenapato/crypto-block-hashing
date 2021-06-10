@@ -65,7 +65,7 @@ Uno de los problemas que encontramos es que cada máquina analizaba los mismos d
 Otro problema era que al un nodo encontar el hash deseado, tenía que mandar una señal a las demás máquinas para que detuvieran su búsqueda. Para eso utilizamos una variable compartida, que se accesaba dentro de la zona crítica, y asi todos los nodos supieran si es hash ya se había, o no, encontrado.
 ### 3.2 Análisis de los inhibidores del paralelismo
 
-*[Incluya aquí un análisis exhaustivo de los inhibidores del paralelismo presentes en el problema planteado y una explicación clara de cómo se resuelve cada uno de ellos en la solución implementada.]*
+Un inhibidor que encontramos es que cuando un hilo dentro de un nodo encontraba el hash deseado le tenía que enviar la variable a los otros hilos y nodos para que estos se detuvieran una vez que el hash fuera encontrado.
 
 ### 3.3 Arquitectura de la solución
 
