@@ -64,7 +64,7 @@ int main(){
         sprintf(pass, "%d", num);
         hash = crypt(pass, "$5$");
         hash = hash+4;
-        printf("Num: %d, Hash: %s\r", num, hash);
+        printf("Num: %d, Hash: %s, Hilo: %d\r", num, hash, tid);
         //fflush();
         //printf("Seguir %d\n", seguir);
         strncpy(strToCompare, hash, dificultad);
