@@ -1,6 +1,4 @@
-# Simulación de minado de bloques de una cripto moneda
----
-#### Materia: *TC2025-Programación Avanzada*
+# Crypto Block Mining Simulation
 
 ##### Integrantes:
 1. Rodrigo Benavente García - A01026973
@@ -10,23 +8,7 @@
 ---
 ## 1. Aspectos generales
 
-Las orientaciones de la tarea se encuentran disponibles en la plataforma **Canvas**.
-
-Este documento es una guía sobre qué información debe entregar como parte del proyecto, qué requerimientos técnicos debe cumplir y la estructura que debe seguir para organizar su entrega.
-
-### 1.1 Requerimientos técnicos
-
-A continuación se mencionan los requerimientos técnicos mínimos del proyecto, favor de tenerlos presente para que cumpla con todos.
-
-* Toda la programación debe realizarse en C.
-* La solución al problema debe utilizar el máximo nivel de paralelismo posible, utilizando PThreads u OpenMP y MPI.
-* La solución debe ejecutarse en un clúster formado como mínimo por el mismo número de nodos que integrantes tenga el equipo.
-* Se debe realizar un análisis de los problemas de concurrencia que se pueden presentar y resolverse de la manera correcta, evitando en todo momento las esperas activas.
-* Para resolver los problemas de concurrencia se deben utilizar algunas de las técnicas estudiadas en el semestre.
-* Todo el código y la documentación del proyecto debe alojarse en este repositorio de GitHub. Favor de mantener la estructura de carpetas propuesta.
-* El código debe estar documentado siguiendo los estándares definidos para el lenguaje de programación C.
-
-### 1.2 Estructura del repositorio
+### 1.1 Estructura del repositorio
 
 El proyecto debe seguir la siguiente estructura de carpetas:
 ```
@@ -38,17 +20,6 @@ El proyecto debe seguir la siguiente estructura de carpetas:
         - main3.c.      # Solucion en paralelo en varios nodos
     - docs			    # Carpeta con la documentación del proyecto: PDF, imágenes, etc.
 ```
-
-### 1.3 Documentación  del proyecto
-
-Como parte de la entrega final del proyecto, se debe incluir la siguiente información:
-
-* Descripción del problema a resolver.
-* Análisis exhaustivo de los problemas de concurrencia que se presentan y una explicación clara de cómo se resuelve cada uno de ellos en la solución propuesta.
-* Análisis exhauistivo de los inhibidores del paralelismo presentes en el problema planteado y una explicación clara de cómo se resuelve cada uno de ellos en la solución implementada.
-* Diagrama con la arquitectura de la solución que incluya: nodos del clúster, componentes de código que se ejecuta en cada nodo, si se hace un *scatter*, *gather*, indicar quien es el nodo maestro y cuáles son los nodos obreros, etc.
-* Descripción de cada uno de los componentes de la solución.
-* Guía de configuración, compilación y ejecución de la solución implementada y todos los componentes, liberías, etc. que se requieran.
 
 ## 2. Descripción del problema
 
@@ -91,7 +62,7 @@ No aplica
 5. Abre una Terminal en tu computadora y cámbiate a la carpeta mpi-vagrant
 6. Clona el repositorio: 
 
-        git clone https://github.com/tec-csf/tc2025-proyecto-final-equipo_2
+        git clone https://github.com/tenapato/crypto-block-hashing
 7. Inicia el clúster: 
         
         vagrant up
@@ -105,7 +76,7 @@ No aplica
 9. Una vez dentro del nodo 1:
     - Moverte a la ubicacion del codigo:
 
-            cd /vagrant/tc2025-proyecto-final-equipo_2/
+            cd /vagrant/crypto-block-hashing/
 
     - Compilar el código:
 
